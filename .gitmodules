@@ -1,0 +1,3 @@
+[submodule "external/smallUtils"]
+	path = external/smallUtils
+	url = git@github.com:Kandimus/smallUtils.git
