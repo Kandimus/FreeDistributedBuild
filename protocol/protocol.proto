@@ -1,0 +1,27 @@
+syntax = "proto2";
+
+option optimize_for = LITE_RUNTIME;
+
+package Packet;
+
+message TaskVariable
+{
+    optional string PrjName = 1;
+    optional string SDir = 2;
+    optional string ODir = 3;
+    optional string WDir = 4;
+    optional string SFile = 5;
+    optional string OFile = 6;
+}
+
+message TaskInfo
+{
+    required TaskVariable variable = 1;
+    required string project = 2;
+    required string sourceFile = 3;
+    required string outputFile = 4;
+    required string application = 5;
+    optional string params = 6;
+    required string workingDir = 7;
+    optional bool   abortOnError = 8;
+}
