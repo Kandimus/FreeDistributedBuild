@@ -1,0 +1,25 @@
+syntax = "proto2";
+
+option optimize_for = LITE_RUNTIME;
+
+package Slave;
+
+message Info
+{
+    required uint32 task_count = 1;
+}
+
+message Result
+{
+    required uint32 id = 1;
+    required int32  exit_code = 2;
+    required int32  process_code = 3;
+    optional string outputFile = 4;
+    //required bytes  file = 5;
+}
+
+message Packet
+{
+    optional Info   info = 1;
+    optional Result result = 2;
+}

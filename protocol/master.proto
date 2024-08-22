@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+option optimize_for = LITE_RUNTIME;
+
+package Master;
+
+message Packet
+{
+    required uint32    id = 1;
+    required string    project = 2;
+    required string    outputFile = 3;
+    required string    application = 4;
+    required string    commandline = 5;
+    required string    workingDir = 6;
+    optional bool      abortOnError = 7;
+}

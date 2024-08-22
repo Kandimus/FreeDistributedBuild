@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<BuildSet FormatVersion="0">
+    <Project Name="Planetside2">
+        <Task SourceFile="$(SDIR)\quickload_-4_-4.uc0" OutputFile="$(SDIR)\..\$(SourceFileName).chk0" WorkingDir="$(WDIR)" Application="ChunkCrunch.exe" Params="Input=$(SourceFile) Output=$(OutputFile)" AbortOnError="True" />
+        <Task SourceFile="$(SDIR)\quickload_-4_-412.uc0" OutputFile="$(SDIR)\..\$(SourceFileName).chk0" WorkingDir="$(WDIR)" Application="ChunkCrunch.exe" Params="Input=$(SourceFile) Output=$(OutputFile)" AbortOnError="True" />
+        <!--Task SourceFile="$(SDIR)\*.uc0" OutputFile="$(SDIR)\..\$(SourceFileName).chk0" WorkingDir="$(WDIR)" Application="ChunkCrunch.exe" Params="Input=$(SourceFile) Output=$(OutputFile)" AbortOnError="True" />
+        <Task SourceFile="$(SDIR)\*.uc1" OutputFile="$(SDIR)\..\$(SourceFileName).chk1" WorkingDir="$(WDIR)" Application="ChunkCrunch.exe" Params="Input=$(SourceFile) Output=$(OutputFile)" AbortOnError="True" />
+        <Task SourceFile="$(SDIR)\*.uc2" OutputFile="$(SDIR)\..\$(SourceFileName).cnk2" WorkingDir="$(WDIR)" Application="ChunkCrunch.exe" Params="Input=$(SourceFile) Output=$(OutputFile)" AbortOnError="True" />
+        <Task SourceFile="$(SDIR)\*.uc3" OutputFile="$(SDIR)\..\$(SourceFileName).cnk3" WorkingDir="$(WDIR)" Application="ChunkCrunch.exe" Params="Input=$(SourceFile) Output=$(OutputFile)" AbortOnError="True" />
+        <Task SourceFile="$(SDIR)\*.uc4" OutputFile="$(SDIR)\..\$(SourceFileName).cnk4" WorkingDir="$(WDIR)" Application="ChunkCrunch.exe" Params="Input=$(SourceFile) Output=$(OutputFile)" AbortOnError="True" />
+        <Task SourceFile="$(SDIR)\*.uc5" OutputFile="$(SDIR)\..\$(SourceFileName).cnk5" WorkingDir="$(WDIR)" Application="ChunkCrunch.exe" Params="Input=$(SourceFile) Output=$(OutputFile)" AbortOnError="True" /-->
+    </Project>
+</BuildSet>
