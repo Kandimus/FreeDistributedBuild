@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 11.0.0, 2024-08-20T17:51:07. -->
+<!-- Written by QtCreator 11.0.0, 2024-08-28T15:12:55. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -91,9 +91,9 @@
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 6.5.2 MSVC2019 64bit</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 6.5.2 MSVC2019 64bit</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">qt.qt6.652.win64_msvc2019_64_kit</value>
-   <value type="qlonglong" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
+   <value type="qlonglong" key="ProjectExplorer.Target.ActiveBuildConfiguration">1</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
-   <value type="qlonglong" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
+   <value type="qlonglong" key="ProjectExplorer.Target.ActiveRunConfiguration">1</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
     <value type="QString" key="CMake.Build.Type">Debug</value>
     <value type="int" key="CMake.Configure.BaseEnvironment">2</value>
@@ -165,16 +165,18 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:\prj\build-FreeIncrediBuilds-Desktop_Qt_6_5_2_MSVC2019_64bit-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">D:/prj/build/FreeDistributeBuild-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
+       <value type="QString">install</value>
       </valuelist>
       <value type="bool" key="CMakeProjectManager.MakeStep.ClearSystemEnvironment">false</value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.UserEnvironmentChanges"/>
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.MakeStep</value>
      </valuemap>
      <value type="qlonglong" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
@@ -191,6 +193,7 @@
       <value type="bool" key="CMakeProjectManager.MakeStep.ClearSystemEnvironment">false</value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.UserEnvironmentChanges"/>
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.MakeStep</value>
      </valuemap>
      <value type="qlonglong" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
@@ -400,7 +403,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseTerminal">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory">D:/prj/FreeIncrediBuilds/out</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/prj/build/FreeDistributeBuild-Debug/console</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/prj/build/FreeDistributeBuild-Release/console</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.1">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -417,8 +420,8 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseTerminal">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory">D:/prj/FreeIncrediBuilds/daemon</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/prj/build/FreeDistributeBuild-Debug/daemon</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory">D:/prj/FreeIncrediBuilds/out</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/prj/build/FreeDistributeBuild-Release/daemon</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">2</value>
   </valuemap>

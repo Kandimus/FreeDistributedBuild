@@ -1,5 +1,4 @@
-﻿
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 
 project(protocol LANGUAGES CXX)
 
@@ -35,6 +34,7 @@ file(GLOB net_cpp "${CMAKE_CURRENT_SOURCE_DIR}/../external/smallUtils/net/*.cpp"
 
 file(GLOB utils_cpp
     "${CMAKE_CURRENT_SOURCE_DIR}/../external/tinyxml2/tinyxml2.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../external/smallUtils/fileex.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../external/smallUtils/stringex.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../external/smallUtils/log.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../external/smallUtils/thread_class.cpp"
@@ -45,6 +45,7 @@ file(GLOB utils_cpp
 # target
 add_library (${PROJECT_NAME} STATIC
     ${files_h} ${files_cpp} ${proto_h} ${proto_cc} ${net_cpp} ${utils_cpp})
+
 target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:DEBUG>)
 
 # include

@@ -1,13 +1,44 @@
 
+#include "fileex.h"
+
+#include <chrono>
+
 #include "tcp_protobufserver.h"
 #include "tcp_protobufnode.h"
-#include "common.h"
+#include "global_constants.h"
+
 
 TcpProtobufServer::TcpProtobufServer(std::vector<TaskInfo>& taskInfo, const std::string& ip, uint16_t port,
                                      uint32_t maxClients, su::Log* plog) :
     su::Net::TcpServer(ip, port, maxClients, plog),
     m_tasks(taskInfo)
 {
+    m_immediatelyCloseClients = true;
+}
+
+void TcpProtobufServer::closeAllClients()
+{
+    Master::Packet packet;
+
+    packet.mutable_system()->set_close(true);
+
+    std::lock_guard<std::mutex> guard(getMutex());
+
+    for (auto node: m_clients)
+    {
+        static_cast<TcpProtobufNode*>(node)->send(packet);
+    }
+}
+
+void TcpProtobufServer::doWork()
+{
+    su::Net::TcpServer::doWork();
+
+    for (auto node: m_clients)
+    {
+        sendTasksToSlave(static_cast<TcpProtobufNode*>(node));
+    }
+
 }
 
 void TcpProtobufServer::onClientDisconnected(su::Net::Node* node)
@@ -34,13 +65,13 @@ bool TcpProtobufServer::onRecvFromNode(su::Net::Node* node)
 {
     auto protoNode = static_cast<TcpProtobufNode*>(node);
 
-    while (protoNode->countOfPackets())
+    while (protoNode->countRecvPackets())
     {
-        auto data = protoNode->extractPacket();
+        auto data = protoNode->extractRecvPacket();
 
         Slave::Packet packet;
 
-        packet.ParseFromArray(data.data(), (int)data.size());
+        packet.ParseFromArray(data.raw.data(), (int)data.raw.size());
 
         if (!packet.IsInitialized())
         {
@@ -50,7 +81,11 @@ bool TcpProtobufServer::onRecvFromNode(su::Net::Node* node)
 
         if (packet.has_info())
         {
-            sendTasksToSlave(protoNode, packet.info());
+            protoNode->m_freeCores = packet.info().task_count();
+            LOGSPN(getLog(), "The client %s sent %i free cores",
+                   protoNode->fullId().c_str(), protoNode->m_freeCores);
+
+            sendTasksToSlave(protoNode);
         }
 
         if (packet.has_result())
@@ -67,11 +102,12 @@ su::Net::Node* TcpProtobufServer::newClient(SOCKET socket, const sockaddr_in& ad
     return new TcpProtobufNode(Global::tcpMagicNumber, socket, addr, getNextClientId(), getLog());
 }
 
-bool TcpProtobufServer::sendTasksToSlave(TcpProtobufNode* node, const Slave::Info& packet)
+bool TcpProtobufServer::sendTasksToSlave(TcpProtobufNode* node)
 {
-    uint32_t count = packet.task_count();
-
-    LOGSPN(getLog(), "The client %s sent %i free cores", node->fullId().c_str(), count);
+    if (node->m_freeCores <= 0)
+    {
+        return true;
+    }
 
     for (auto& task: m_tasks)
     {
@@ -82,16 +118,31 @@ bool TcpProtobufServer::sendTasksToSlave(TcpProtobufNode* node, const Slave::Inf
             continue;
         }
 
+        Master::Packet packet;
+
+        packet.mutable_task()->CopyFrom(task.m_message);
+
+        if (su::fs::load(task.m_vars.SourceFile, *packet.mutable_task()->mutable_inputdata()) != su::fs::OK)
+        {
+            LOGSPE(getLog(), "Can not load '%s' source file", task.m_vars.SourceFile.c_str());
+        }
+
+        LOGSPI(getLog(), "Loaded '%s' source file, size %u",
+               task.m_vars.SourceFile.c_str(), packet.mutable_task()->inputdata().size());
+
+        if (!packet.mutable_task()->IsInitialized())
+        {
+            LOGSPE(getLog(), "Initialization of task %u failed", packet.mutable_task()->id());
+            return false;
+        }
+
         task.m_node = node;
 
-        LOGSPN(getLog(), "Send to the client %s task %i", node->fullId().c_str(), task.m_message.id());
-        node->send(task.m_message);
+        LOGSPN(getLog(), "Send to the client %s task %i", node->fullId().c_str(), packet.mutable_task()->id());
+        node->send(packet);
 
-        --count;
-        if (!count)
-        {
-            break;
-        }
+        --node->m_freeCores;
+        return true;
     }
 
     return true;
@@ -110,7 +161,19 @@ bool TcpProtobufServer::applyResultFromSlave(TcpProtobufNode* node, const Slave:
 
         task.m_exitCode = packet.exit_code();
         task.m_result = static_cast<su::Process::ExitCodeResult>(packet.process_code());
+        task.m_doneIp = task.m_node->fullId();
         task.m_node = nullptr;
+
+        if (!task.m_exitCode && task.m_result == su::Process::ExitCodeResult::Exited && packet.has_outputdata())
+        {
+            task.m_exitCode = su::fs::save(task.m_vars.OutputFile, packet.outputdata());
+            if (task.m_exitCode != su::fs::OK)
+            {
+                LOGSPE(getLog(), "Can not save output file to '%s', size %u",
+                       task.m_vars.OutputFile.c_str(),
+                        packet.outputfile().size());
+            }
+        }
 
         LOGSPI(getLog(), "Received result packet with id %i from client %s", packet.id(), node->fullId().c_str());
 

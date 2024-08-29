@@ -13,12 +13,12 @@ public:
                       uint32_t maxClients, su::Log* plog);
     virtual ~TcpProtobufServer() = default;
 
-    //virtual void onClientJoin(su::TcpNode*) override;
+    void closeAllClients();
 
 protected:
     // ThreadClass
-    //virtual void doWork() override;
-    //virtual void doClose() override;
+    virtual void doWork() override;
+    //virtual void doFinished() override;
 
     // TcpServer
     //virtual bool send(TcpNode* target, const void* packet, size_t size);
@@ -27,7 +27,7 @@ protected:
     virtual su::Net::Node* newClient(SOCKET socket, const sockaddr_in& addr) override;
 
 private:
-    bool sendTasksToSlave(TcpProtobufNode* node, const Slave::Info& packet);
+    bool sendTasksToSlave(TcpProtobufNode* node);
     bool applyResultFromSlave(TcpProtobufNode* node, const Slave::Result& packet);
 
 private:

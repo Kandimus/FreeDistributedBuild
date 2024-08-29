@@ -2,7 +2,10 @@
 #pragma once
 
 #include "net/packetnode.h"
+
+#pragma warning(disable:4251)
 #include "google/protobuf/message_lite.h"
+#pragma warning(default:4251)
 
 class TcpProtobufNode : public su::Net::PacketNode
 {
@@ -14,4 +17,7 @@ public:
     // TcpProtobufNode
     virtual size_t send(const ::google::protobuf::MessageLite& message);
     virtual bool onRecivedMessage(::google::protobuf::MessageLite& message);
+
+public:
+    int32_t m_freeCores = 0;
 };

@@ -1,10 +1,11 @@
 ﻿#pragma once
 
-#include <string>
+#include <thread>
 
-class Project
+namespace Global
 {
-public:
-    std::string m_name;
-    std::string m_path;
-};
+
+extern std::atomic_bool windowFinish;
+
+}
+

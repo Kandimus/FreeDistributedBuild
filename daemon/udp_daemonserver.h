@@ -6,17 +6,16 @@
 #include "net/udp_node.h"
 #include "tcp_protobufnode.h"
 
-#include "daemon.h"
-
 class TcpProtobufClient;
+class Projects;
 
 class UdpDaemonServer : public su::Net::UdpServer
 {
 public:
     UdpDaemonServer() = delete;
     UdpDaemonServer(su::Net::UdpNode& node, const std::string& ip, uint16_t port,
-                    std::vector<Project>& projects, su::Log* plog = nullptr);
-    virtual ~UdpDaemonServer() = default;
+                    Projects& projects, su::Log* plog = nullptr);
+    virtual ~UdpDaemonServer();
 
 protected:
     // su::TcpClient
@@ -26,13 +25,19 @@ protected:
     virtual bool onRecvFromNode() override;
 
 private:
-    bool checkProject(const std::string& name);
+    enum Status
+    {
+        Idle,
+        Connectig,
+        Working,
+    };
 
-private:
+    std::mutex m_mutex;
     su::Crc32 m_crc32;
-    std::vector<Project>& m_projects;
-    std::atomic_bool m_working = false;
+    Projects& m_projects;
+    Status m_status = Idle;
     TcpProtobufNode m_clientNode;
-    TcpProtobufClient* m_client = nullptr;
+    std::unique_ptr<TcpProtobufClient> m_client;
+    bool m_isConnectedPulse = false;
 };
 

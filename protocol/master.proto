@@ -4,13 +4,28 @@ option optimize_for = LITE_RUNTIME;
 
 package Master;
 
+message Task
+{
+    required uint32 id = 1;
+    required string project = 2;
+    required string outputFile = 3;
+    required string application = 4;
+    required string commandline = 5;
+    required string workingDir = 6;
+    required string sourceFile = 7;
+    required string inputData = 8;
+
+    // flags
+    optional bool   abortOnError = 9;
+}
+
+message System
+{
+    optional bool close = 1;
+}
+
 message Packet
 {
-    required uint32    id = 1;
-    required string    project = 2;
-    required string    outputFile = 3;
-    required string    application = 4;
-    required string    commandline = 5;
-    required string    workingDir = 6;
-    optional bool      abortOnError = 7;
+    optional Task task = 1;
+    optional System system = 2;
 }

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<Config FormatVersion="0">
-    <Project Name="Planetside2" Path="X:\Planetside2\Main\" />
-    <WorkTime>
-      <Time begin="18:00" end="09:00" Bath="100" />
-      <Default Bath="50" />
-    </WorkTime>
-</Config>
